@@ -5,6 +5,29 @@ from unidecode import unidecode
 terms = {}
 queries = {}
 
+queries['capital'] = """
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX yago-res: <http://yago-knowledge.org/resource/>
+
+SELECT distinct ?thing ?name WHERE
+{
+{
+{?thing dct:subject dbc:Capitals_in_Africa.}
+UNION
+{?thing dct:subject dbc:Capitals_in_South_America.}
+}
+?thing rdfs:label ?n.
+FILTER (lang(?n) = 'en')
+FILTER (!regex(?n, "list", "i"))
+BIND(REPLACE(?n, " \\\\(city\\\\)", "", "i") AS ?name)
+}
+"""
+
 queries['cheese'] = """
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbr: <http://dbpedia.org/resource/>

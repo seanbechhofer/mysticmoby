@@ -60,7 +60,7 @@ rules = {
     'may_positive': ['may', 'might', 'could'],
     'may_ambivalent': ['seems to', 'appears to', 'is likely to'],
     'may_negative': ['may not', 'is unlikely to'],
-    'place': ['#village#', '#town#'],
+    'place': ['#village#', '#town#', '#capital#'],
     'horizon': ['is on the horizon',
                 'is highly unlikely',
                 'could be round the corner',
@@ -69,9 +69,9 @@ rules = {
     'travel': ['avoid #town#',
                '#surprise_modifier.a# surprise awaits in #village#',
                'travel to #town# is not recommended',
-               'travel to #town# will reap rewards',
-               'a trip to #village# offers promise',
-               'going to #village# is ill-advised' ],
+               'travel to #place# will reap rewards',
+               'a trip to #place# offers promise',
+               'going to #place# is ill-advised' ],
     'money': ['unexpected expenses could arise',
               '#qualifier# fortune #may# come your way #today#',
               'profit #horizon#'],
@@ -161,7 +161,8 @@ rules = {
     'zodiac': zodiac,
     'got_house': got_house,
     'poisonous_plant': terms['poisonous_plant'],
-    'cheese': terms['cheese']
+    'cheese': terms['cheese'],
+    'capital': terms['capital']
 }
 
 # Write the grammar out to json
