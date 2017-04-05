@@ -4,7 +4,35 @@ from unidecode import unidecode
 
 terms = {}
 queries = {}
+lists = ['subject','sport']
 
+for l in lists:
+    with open ('sources/{}.txt'.format(l)) as f:
+        content = f.readlines()
+    terms[l] = [x.strip() for x in content]
+
+
+queries['conjecture'] = """
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX yago-res: <http://yago-knowledge.org/resource/>
+
+SELECT distinct ?thing ?name WHERE
+{
+{
+{?thing dct:subject dbc:Conjectures.}
+}
+?thing rdfs:label ?name.
+FILTER (lang(?name) = 'en')
+FILTER (!regex(?name, "\\\\(", "i"))
+FILTER (!regex(?name, "list", "i"))
+}
+"""
+    
 queries['capital'] = """
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbr: <http://dbpedia.org/resource/>
