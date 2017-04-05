@@ -1,5 +1,5 @@
 {
   "grammar": "grammar/moby.json",
   "production": "origin",
-  "frequency": 2
+  "frequency": 1
 }
