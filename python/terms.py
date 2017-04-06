@@ -12,6 +12,48 @@ for l in lists:
     terms[l] = [x.strip() for x in content]
 
 
+queries['scientist'] = """
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX yago-res: <http://yago-knowledge.org/resource/>
+
+SELECT distinct ?thing ?n WHERE
+{
+{?thing dct:subject dbc:Fictional_mad_scientists.
+?thing rdf:type yago:Person100007846.}
+?thing rdfs:label ?name.
+FILTER (lang(?name) = 'en')
+BIND(REPLACE(?name, " \\\\(.*\\\\)", "", "i") AS ?n)
+}
+"""
+
+queries['martial_artist'] = """
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX yago-res: <http://yago-knowledge.org/resource/>
+
+SELECT distinct ?thing ?n WHERE
+{
+{?thing dct:subject dbc:Anthropomorphic_martial_artists.
+}
+?thing rdfs:label ?name.
+FILTER (lang(?name) = 'en')
+FILTER (!regex(?name, "list", "i"))
+
+BIND(REPLACE(?name, " \\\\(.*\\\\)", "", "i") AS ?n)
+FILTER (!regex(?n, "s$", "i"))
+
+}
+"""
+
 queries['conjecture'] = """
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbr: <http://dbpedia.org/resource/>
@@ -199,7 +241,11 @@ PREFIX yago-res: <http://yago-knowledge.org/resource/>
 
 SELECT distinct ?thing ?name WHERE
 {
-?thing dct:subject dbc:Rodents_of_Europe.
+{
+{?thing dct:subject dbc:Rodents_of_Europe.}
+UNION
+{?thing dct:subject dbc:Rodents_of_North_America.}
+}
 ?thing rdfs:label ?name.
 FILTER (lang(?name) = 'en')
 }
@@ -266,7 +312,11 @@ PREFIX yago-res: <http://yago-knowledge.org/resource/>
 
 SELECT distinct ?thing ?name WHERE
 {
-?thing dct:subject dbc:Amphibians_of_Europe.
+{
+{?thing dct:subject dbc:Amphibians_of_Europe.}
+UNION
+{?thing dct:subject dbc:Amphibians_of_North_America.}
+}
 ?thing rdf:type dbo:Amphibian.
 ?thing rdfs:label ?name.
 FILTER (lang(?name) = 'en')
@@ -332,6 +382,14 @@ UNION
 {?thing dct:subject dbc:Villages_in_Lancashire.}
 UNION
 {?thing dct:subject dbc:Villages_in_Norfolk.}
+UNION
+{?thing dct:subject dbc:Villages_in_Argyll_and_Bute.}
+UNION
+{?thing dct:subject dbc:Villages_in_Lewis.}
+UNION
+{?thing dct:subject dbc:Villages_in_the_Outer_Hebrides.}
+UNION
+{?thing dct:subject dbc:Villages_in_Gwynedd.}
 }
 ?thing foaf:name ?name.
 FILTER (lang(?name) = 'en')

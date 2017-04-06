@@ -81,6 +81,7 @@ rules = {
                '#surprise_modifier.a# surprise awaits in #village#',
                '#travel_to# #town# is #ill_advised#',
                '#travel_to# #place# offers #benefit#',
+               '#travel_to# #place# has little #benefit#',
                '#travel_to# #place# #may# offer #benefit#'],
     'money': ['unexpected expenses #may_positive# arise',
               '#qualifier# fortune #may# come your way #today#',
@@ -88,7 +89,7 @@ rules = {
     'change': ['#consider# a change of #changed#',
                'it may be time to #consider# your #changed#'],
     'changed': ['relationship', 'career', 'clothing', 'opinion', 'perspective',
-                'direction','beliefs', 'vocation', 'banking arrangements'],
+                'direction','beliefs', 'vocation', 'banking arrangements','washing powder'],
     'work': ['work will #work_modifier# #today#', 'work #may# #be# #rewarding# #today#'],
     'be': ['prove', 'be', 'become'],
     'rewarding': ['rewarding', 'a waste of time', 'boring', 'a revelation', 'unbearable'],
@@ -100,23 +101,8 @@ rules = {
     'stranger': ['stranger', 'friend', 'old friend', 'unexpected quarter', '#rodent#'], 
     
     'active': ['#sport# may be for you', 'you #you_may# try #sport#'],
-    'study': ['#day# to study #subject#'],
-    'activity': ['#day# to #job# the #room#'],
-    
-    'job': ['clean', 'paint', 'defumigate', 'dismantle', 'spend time in', 'rebuild',
-        'clear up',
-        'disinfect',
-        'dust',
-        'sweep',
-        'tidy up',
-        'fix',
-        'redecorate',
-        'renovate',
-        'rearrange'],
-    'room': ['kitchen', 'office', 'bathroom', 'attic', 'garden', 'toilet',
-             'closet', 'living room', 'dining room', 'garage', 'study',
-             'workshop', 'conservatory', 'cellar', 'front yard'
-        ],
+    'study': ['#day# to #read_up_on# #subject#'],
+    'read_up_on': ['study', 'read up on', 'investigate'],
     'stellar': ['#body# #coinciding# #constellation#',
                 '#body# #coinciding# #constellation#',
                 '#body# #coinciding# #zodiac#',
@@ -133,7 +119,7 @@ rules = {
                 '#zodiac# #modified#'],
     'planet': ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Neptune', 'Saturn',
                'Uranus', 'Pluto'],
-    'body': ['#planet#', '#planet#', '#planet#', '#star_trek_planet#'],
+    'body': ['#planet#', '#planet#', '#martial_artist#', '#star_trek_planet#'],
 
     'maths': ['give some thought to the #conjecture#',
               'the answer #may# #lie_with# the #conjecture#'],
@@ -176,7 +162,8 @@ rules = {
     'capital': terms['capital'],
     'subject': terms['subject'],
     'sport': terms['sport'],
-    'conjecture': terms['conjecture']
+    'conjecture': terms['conjecture'],
+    'martial_artist': terms['martial_artist']
 }
 
 # Write the grammar out to json
