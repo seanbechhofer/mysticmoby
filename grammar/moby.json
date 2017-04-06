@@ -3655,6 +3655,13 @@
     "lucky_animal": [
         "Lucky animal: #beast#"
     ], 
+    "beast": [
+        "#godzilla#", 
+        "#rodent#", 
+        "#amphibian#", 
+        "#pest#", 
+        "#primate#"
+    ], 
     "active": [
         "#sport# may be for you", 
         "you #you_may# try #sport#"
@@ -3785,12 +3792,17 @@
         "Thetford", 
         "Cromer"
     ], 
-    "beast": [
-        "#godzilla#", 
-        "#rodent#", 
-        "#amphibian#", 
-        "#pest#", 
-        "#primate#"
+    "maybe_partially": [
+        "", 
+        "", 
+        "", 
+        "", 
+        "partially ", 
+        "semi-", 
+        "fully ", 
+        "comparatively ", 
+        "fractionally ", 
+        "slightly "
     ], 
     "lucky_colour": [
         "Lucky colour: #horse_colour#"
@@ -3823,15 +3835,14 @@
         "washing powder"
     ], 
     "modified": [
-        "is obscure", 
-        "is acute", 
-        "is descending", 
+        "is #maybe_partially#obscure", 
+        "is #maybe_partially#acute", 
+        "is #maybe_partially#descending", 
         "is angry", 
-        "has inverted", 
-        "is hidden", 
-        "is partially oblated", 
-        "is oblated", 
-        "is rhomboid", 
+        "has #maybe_partially#inverted", 
+        "is #maybe_partially#hidden", 
+        "is #maybe_partially#oblated", 
+        "is #maybe_partially#rhomboid", 
         "enters a spherical period"
     ], 
     "read_up_on": [
