@@ -161,7 +161,10 @@
     ], 
     "lucky_number": [
         "Lucky number: #number#", 
+        "Lucky number: #number#", 
         "Lucky numbers: #number# #number#", 
+        "Lucky numbers: #number# #number#", 
+        "Lucky number: #constant#", 
         "Lucky number: #cheese#"
     ], 
     "number": [
@@ -3086,6 +3089,15 @@
         "#town#", 
         "#capital#"
     ], 
+    "constant": [
+        "i", 
+        "e", 
+        "G", 
+        "6.022e+23", 
+        "&pi;", 
+        "&phi;", 
+        "&radic;2"
+    ], 
     "amphibian": [
         "Ambrosi's cave salamander", 
         "Levant water frog", 
@@ -3832,7 +3844,8 @@
         "beliefs", 
         "vocation", 
         "banking arrangements", 
-        "washing powder"
+        "washing powder", 
+        "isp"
     ], 
     "modified": [
         "is #maybe_partially#obscure", 
