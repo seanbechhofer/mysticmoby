@@ -46,22 +46,23 @@ for s1 in stems_primary:
     for s2 in stems_secondary:
         if s1 != s2:
             origin_rules.append("#stellar.capitalize##so# #{}#. #{}.capitalize#. #maybe_lucky#".format(s1,s2))
+            origin_rules.append("#{}.capitalize#. #stellar.capitalize##so# #{}#. #maybe_lucky#".format(s1,s2))
             origin_rules.append("#{}.capitalize# as #stellar.capitalize#. #{}.capitalize#. #maybe_lucky#".format(s1,s2))
 
 # Tracery Grammar
 rules = {
     'origin': origin_rules,
     'so': [' so',' --', ':'],
-    'you_may': ['may', 'might', 'could', 'may not', 'probably won\'t'],
-    'may': ['#may_positive#', '#may_ambivalent#', '#may_negative#'],
-    'may_positive': ['may', 'might', 'could'],
-    'may_ambivalent': ['seems to', 'appears to', 'is likely to'],
-    'may_negative': ['may not', 'is unlikely to'],
+    'you_hedge': ['may', 'might', 'could', 'may not', 'probably won\'t'],
+    'hedge': ['#hedge_positive#', '#hedge_ambivalent#', '#hedge_negative#'],
+    'hedge_positive': ['may', 'might', 'could', 'will perhaps'],
+    'hedge_ambivalent': ['seems to', 'appears to', 'is likely to'],
+    'hedge_negative': ['may not', 'is unlikely to'],
     'horizon': ['is on the horizon',
                 'is highly unlikely',
                 'could be round the corner',
                 'is on the cards',
-                'may come to pass'],
+                '#hedge_positive# come to pass'],
     'surprise_modifier': ['pleasant', 'nasty', 'unpleasant', '', 'unexpected'],
     'qualifier': ['#good_qualifier#', '#bad_qualifier#'],
     'good_qualifier': ['good', 'excellent'],
@@ -74,7 +75,7 @@ rules = {
 
     'love': ['new love #horizon#', '#qualifier.a# time to rekindle an old flame',
              '#qualifier.a# period for relationships',
-             'you #you_may# find love in #place#',
+             'you #you_hedge# find love in #place#',
              'pay attention to your relationships'],
     'place': ['#village#', '#town#', '#capital#'],
     'travel': ['avoid #town#',
@@ -82,26 +83,26 @@ rules = {
                '#travel_to# #town# is #ill_advised#',
                '#travel_to# #place# offers #benefit#',
                '#travel_to# #place# has little #benefit#',
-               '#travel_to# #place# #may# offer #benefit#'],
-    'money': ['unexpected expenses #may_positive# arise',
-              '#qualifier# fortune #may# come your way #today#',
+               '#travel_to# #place# #hedge# offer #benefit#'],
+    'money': ['unexpected expenses #hedge_positive# arise',
+              '#qualifier# fortune #hedge# come your way #today#',
               'profit #horizon#'],
     'change': ['#consider# a change of #changed#',
-               'it may be time to #consider# your #changed#'],
+               'it #hedge_positive# be time to #consider# your #changed#'],
     'changed': ['relationship', 'career', 'clothing', 'opinion', 'perspective',
                 'direction','beliefs', 'vocation', 'banking arrangements','washing powder',
-                'isp'],
-    'work': ['work will #work_modifier# #today#', 'work #may# #be# #rewarding# #today#'],
+                'ISP'],
+    'work': ['work will #work_modifier# #today#', 'work #hedge# #be# #rewarding# #today#'],
     'be': ['prove', 'be', 'become'],
     'rewarding': ['rewarding', 'a waste of time', 'boring', 'a revelation', 'unbearable'],
     'work_modifier': ['bear fruit', 'prove difficult', 'try your patience'],
     'today': ['today', 'tomorrow', 'this week'],
     'day': ['#qualifier.a# day#', '#good_qualifier.a# opportunity'],
-    'news': ['#qualifier# news #may_positive# come from #stranger.a#',
-             'news #may_positive# arrive with #stranger.a#'],
+    'news': ['#qualifier# news #hedge_positive# come from #stranger.a#',
+             'news #hedge_positive# arrive with #stranger.a#'],
     'stranger': ['stranger', 'friend', 'old friend', 'unexpected quarter', '#rodent#'], 
     
-    'active': ['#sport# may be for you', 'you #you_may# try #sport#'],
+    'active': ['#sport# may be for you', 'you #you_hedge# try #sport#'],
     'study': ['#day# to #read_up_on# #subject#'],
     'read_up_on': ['study', 'read up on', 'investigate'],
     'stellar': ['#body# #coinciding# #constellation#',
@@ -120,10 +121,10 @@ rules = {
                 '#zodiac# #modified#'],
     'planet': ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Neptune', 'Saturn',
                'Uranus', 'Pluto'],
-    'body': ['#planet#', '#planet#', '#martial_artist#', '#star_trek_planet#'],
+    'body': ['#planet#', '#martial_artist#', '#metal_band#', '#star_trek_planet#'],
 
     'maths': ['give some thought to the #conjecture#',
-              'the answer #may# #lie_with# the #conjecture#'],
+              'the answer #hedge# #lie_with# the #conjecture#'],
 #    'body': ['#planet#', '#planet#', '#planet#', '#star_trek_planet#', '#minor_planet#', '#asteroid#'],
     'constellation': constellation,
     'star_trek_planet': star_trek_planet,
@@ -170,7 +171,8 @@ rules = {
     'subject': terms['subject'],
     'sport': terms['sport'],
     'conjecture': terms['conjecture'],
-    'martial_artist': terms['martial_artist']
+    'martial_artist': terms['martial_artist'],
+    'metal_band': terms['metal_band']
 }
 
 # Write the grammar out to json

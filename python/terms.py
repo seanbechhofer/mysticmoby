@@ -11,7 +11,35 @@ for l in lists:
         content = f.readlines()
     terms[l] = [x.strip() for x in content]
 
+queries['metal_band'] = """
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX yago-res: <http://yago-knowledge.org/resource/>
 
+SELECT distinct ?thing ?n WHERE
+{
+{
+{?thing dct:subject dbc:Thrash_metal_musical_groups.}
+UNION
+{?thing dct:subject dbc:Extreme_metal_musical_groups.}
+UNION
+{?thing dct:subject dbc:Progressive_metal_musical_groups.}
+UNION
+{?thing dct:subject dbc:Norwegian_avant-garde_metal_musical_groups.}
+UNION
+{?thing dct:subject dbc:Doom_metal_musical_groups.}
+}
+?thing rdfs:label ?name.
+FILTER (lang(?name) = 'en')
+FILTER (!regex(?name, "list", "i"))
+BIND(REPLACE(?name, " \\\\(.*\\\\)", "", "i") AS ?n)
+}
+"""
+    
 queries['scientist'] = """
 PREFIX dbp: <http://dbpedia.org/property/>
 PREFIX dbr: <http://dbpedia.org/resource/>
