@@ -100,7 +100,9 @@ rules = {
     'day': ['#qualifier.a# day#', '#good_qualifier.a# opportunity'],
     'news': ['#qualifier# news #hedge_positive# come from #stranger.a#',
              'news #hedge_positive# arrive with #stranger.a#'],
-    'stranger': ['stranger', 'friend', 'old friend', 'unexpected quarter', '#rodent#'], 
+    'stranger': ['stranger', 'friend', 'old friend', 'unexpected quarter',
+                 'stranger', 'friend', 'old friend', 'unexpected quarter', 
+                 'stranger', 'friend', 'old friend', 'unexpected quarter', '#rodent#'], 
     
     'active': ['#sport# may be for you', 'you #you_hedge# try #sport#'],
     'study': ['#day# to #read_up_on# #subject#'],
