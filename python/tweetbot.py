@@ -12,6 +12,10 @@ import twitter
 import os
 from random import randint
 
+import boto.s3
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
+
 # Twitter character limit
 LIMIT = 140
 
@@ -44,7 +48,6 @@ if __name__=="__main__":
     parser.add_argument('-c', '--config', help='configuration file', default="config.json")
     parser.add_argument('-n', '--notweet', help='no tweeting', action="store_true")
     parser.add_argument('-d', '--debug', help='debug', action="store_true")
-    parser.add_argument('-s', '--since', help='since file', default="since.id")
 
     args = parser.parse_args()
 
@@ -54,8 +57,30 @@ if __name__=="__main__":
     consumer_secret=os.environ['API_SECRET']
     access_token_key=os.environ['ACCESS_TOKEN']
     access_token_secret=os.environ['ACCESS_SECRET']
+    aws_access_key=os.environ['AWS_ACCESS_KEY']
+    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
 
+    # Connect to S3
+    aws_connection = boto.s3.connect_to_region('eu-west-2',
+       aws_access_key_id=aws_access_key,
+       aws_secret_access_key=aws_secret_access_key,
+#       is_secure=True,               # uncomment if you are not using ssl
+       calling_format = boto.s3.connection.OrdinaryCallingFormat(),
+       )
 
+    # Get the moby bucket    
+    print aws_connection
+    bucket = aws_connection.get_bucket('mystic-moby-tweetbot')
+    print bucket
+
+    # Get since file contents
+    key = Key(bucket)
+    key.key = 'since.id'
+    since = key.get_contents_as_string()
+
+    lastTweet = int(since)
+    print lastTweet
+    
     grammar = config['grammar']
     production = config['production']
     frequency = config['frequency']
@@ -68,12 +93,9 @@ if __name__=="__main__":
                       access_token_secret)
     account_name = api.VerifyCredentials().screen_name
 
-    with open(args.since, 'r') as f:
-        last_known_id = f.readline()
-        
     print "Verified: {}".format((account_name))
     # Find mentions of me 
-    mentions = get_mentions(api,int(last_known_id))
+    mentions = get_mentions(api,lastTweet)
     print mentions
     for mention in mentions:
         # For each mention reply
@@ -90,9 +112,7 @@ if __name__=="__main__":
                 status = api.PostUpdate(tweetText, in_reply_to_status_id=mention.id)
                 print "http://twitter.com/{}/status/{}".format(account_name, status.id)
                 print status.text
-                since_file = open(args.since, "w")
-                since_file.write(str(status.id))
-                since_file.close()
+                key.set_contents_from_string(str(status.id))
             
                 
 
