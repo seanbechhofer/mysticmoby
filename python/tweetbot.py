@@ -22,6 +22,7 @@ LIMIT = 140
 # Max number of attempts
 ATTEMPTS = 10
 
+# Construct a tweet replying to a user
 def tweet(to_user,grammar, production):
     stuff = ""
     with open(grammar) as f:
@@ -41,7 +42,7 @@ def tweet(to_user,grammar, production):
     return stuff
 
 def get_mentions(api,since):
-    return api.GetMentions(since_id=since)
+    return api.GetMentions(since_id=since,count=100)
     
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Generate Tweets.')
@@ -64,7 +65,7 @@ if __name__=="__main__":
     aws_connection = boto.s3.connect_to_region('eu-west-2',
        aws_access_key_id=aws_access_key,
        aws_secret_access_key=aws_secret_access_key,
-#       is_secure=True,               # uncomment if you are not using ssl
+       is_secure=True,               # uncomment if you are not using ssl
        calling_format = boto.s3.connection.OrdinaryCallingFormat(),
        )
 
@@ -73,7 +74,8 @@ if __name__=="__main__":
     bucket = aws_connection.get_bucket('mystic-moby-tweetbot')
     print bucket
 
-    # Get since file contents
+    # Get since.id file contents. Should contain the id of the last tweet that I made
+    # This should ensure that each tweet is only replied to once. 
     key = Key(bucket)
     key.key = 'since.id'
     since = key.get_contents_as_string()
@@ -94,7 +96,8 @@ if __name__=="__main__":
     account_name = api.VerifyCredentials().screen_name
 
     print "Verified: {}".format((account_name))
-    # Find mentions of me 
+    # Find mentions of me. This will only pick up a limited number of
+    # tweets, so if I become really popular, it may miss things.
     mentions = get_mentions(api,lastTweet)
     print mentions
     for mention in mentions:
@@ -103,15 +106,17 @@ if __name__=="__main__":
         print mention.user.screen_name
         tweetText = tweet(to_user=mention.user.screen_name,grammar=grammar,production=production)
         if tweetText == "":
-            print "Unsuccesful Generation"
+            print "Unsuccessful Generation"
         else:
             if args.notweet or args.debug:
                 print "Not tweeted"
                 print tweetText
             else:
+                # Post update
                 status = api.PostUpdate(tweetText, in_reply_to_status_id=mention.id)
                 print "http://twitter.com/{}/status/{}".format(account_name, status.id)
                 print status.text
+                # Store id of tweet in S3
                 key.set_contents_from_string(str(status.id))
             
                 
