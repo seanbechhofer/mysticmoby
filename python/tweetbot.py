@@ -10,11 +10,22 @@ import tracery
 from tracery.modifiers import base_english
 import twitter
 import os
+import logging
 from random import randint
 
 import boto.s3
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+
+logger = logging.getLogger('moby')
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+#handler.setLevel(logging.DEBUG)
+#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+logger.addHandler(handler)
 
 # Twitter character limit
 LIMIT = 140
@@ -22,7 +33,7 @@ LIMIT = 140
 # Max number of attempts
 ATTEMPTS = 10
 
-# Construct a tweet replying to a user
+"""Construct a tweet replying to a user"""
 def tweet(to_user,grammar, production):
     stuff = ""
     with open(grammar) as f:
@@ -41,9 +52,11 @@ def tweet(to_user,grammar, production):
         stuff = ""
     return stuff
 
+"""Find mentions of me"""
 def get_mentions(api,since):
     return api.GetMentions(since_id=since,count=100)
-    
+
+# Main method
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Generate Tweets.')
     parser.add_argument('-c', '--config', help='configuration file', default="config.json")
@@ -69,10 +82,11 @@ if __name__=="__main__":
        calling_format = boto.s3.connection.OrdinaryCallingFormat(),
        )
 
-    # Get the moby bucket    
-    print aws_connection
+    # Get the moby bucket
+    logger.debug(aws_connection)
+    
     bucket = aws_connection.get_bucket('mystic-moby-tweetbot')
-    print bucket
+    logger.debug(bucket)
 
     # Get since.id file contents. Should contain the id of the last tweet that I made
     # This should ensure that each tweet is only replied to once. 
@@ -81,13 +95,14 @@ if __name__=="__main__":
     since = key.get_contents_as_string()
 
     lastTweet = int(since)
-    print lastTweet
-    
+    logger.debug(lastTweet)
+
+    # Get the grammar details     
     grammar = config['grammar']
     production = config['production']
     frequency = config['frequency']
 
-    print "Grammar: {}, production: {}".format(grammar, production)
+    logger.info("Grammar: {}, production: {}".format(grammar, production))
     
     api = twitter.Api(consumer_key,
                       consumer_secret,
@@ -95,15 +110,15 @@ if __name__=="__main__":
                       access_token_secret)
     account_name = api.VerifyCredentials().screen_name
 
-    print "Verified: {}".format((account_name))
+    logger.info("Verified: {}".format((account_name)))
     # Find mentions of me. This will only pick up a limited number of
     # tweets, so if I become really popular, it may miss things.
     mentions = get_mentions(api,lastTweet)
-    print mentions
+    logger.info(mentions)
     for mention in mentions:
         # For each mention reply
-        print mention.id
-        print mention.user.screen_name
+        logger.info(mention.id)
+        logger.info(mention.user.screen_name)
         tweetText = tweet(to_user=mention.user.screen_name,grammar=grammar,production=production)
         if tweetText == "":
             print "Unsuccessful Generation"
